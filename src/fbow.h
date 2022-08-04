@@ -7,7 +7,9 @@
 #include <memory>
 #include <bitset>
 #ifndef __ANDROID__
+#ifndef TARGET_OS_IOS
 #include <immintrin.h>
+#endif
 #endif
 #include "cpu.h"
 namespace fbow{
@@ -70,7 +72,7 @@ class FBOW_API Vocabulary
      *(ptr-1)=(unsigned char)off; //save in prev, the offset  to properly remove it
      return ptr;
  }
-  
+
      static inline void AlignedFree(void *ptr){
          if(ptr==nullptr)return;
          unsigned char *uptr=(unsigned char *)ptr;
@@ -78,7 +80,7 @@ class FBOW_API Vocabulary
          uptr-=off;
          std::free(uptr);
      }
-  
+
  // using Data_ptr = std::unique_ptr<char[], decltype(&AlignedFree)>;
 
     friend class VocabularyCreator;

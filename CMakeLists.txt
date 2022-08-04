@@ -14,28 +14,17 @@ set(PROJECT_SOVERSION "${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}")
 set(CMAKE_MACOSX_RPATH 1)
 
 #------------------------------------------------------
-# Build type
-#------------------------------------------------------
-
-IF(NOT CMAKE_BUILD_TYPE )
-   SET( CMAKE_BUILD_TYPE "Release" )
-ENDIF()
-
-#------------------------------------------------------
 # Lib Names and Dirs
 #------------------------------------------------------
 
 if(WIN32)
     # Postfix of DLLs:
-    SET(PROJECT_DLLVERSION "${PROJECT_VERSION_MAJOR}${PROJECT_VERSION_MINOR}${PROJECT_VERSION_PATCH}")
     SET(RUNTIME_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin CACHE PATH "Directory for dlls and binaries")
     SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin CACHE PATH "Directory for binaries")
     SET(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin CACHE PATH "Directory for dlls")
 else()
     # Postfix of so's:
     set(PROJECT_DLLVERSION)
-    SET(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_INSTALL_PREFIX}/lib/cmake/ /usr/lib/cmake /home/mjmarin/libs/ORB_SLAM2/lib/)
-
 endif()
 
 
@@ -53,7 +42,8 @@ option(FBOW_DEVINSTALL 	"Set to OFF to disable source installation" ON)
 # ----------------------------------------------------------------------------
 #   Find Dependencies
 # ----------------------------------------------------------------------------
-find_package(OpenCV  REQUIRED)
+include(${CMAKE_BINARY_DIR}/conan_paths.cmake)
+find_package(OpenCV REQUIRED CONFIG)
 INCLUDE_DIRECTORIES(${OpenCV_INCLUDE_DIRS})
 MESSAGE("OPENCVINCDIR=${OpenCV_INCLUDE_DIRS}")
 
@@ -80,22 +70,6 @@ IF (INSTALL_DOC)
     INCLUDE("${PROJECT_SOURCE_DIR}/generateDoc.cmake")
     GENERATE_DOCUMENTATION(${PROJECT_SOURCE_DIR}/dox.in)
 ENDIF()
- 
-# ----------------------------------------------------------------------------
-#   Uninstall target, for "make uninstall"
-# ----------------------------------------------------------------------------
-CONFIGURE_FILE( "${CMAKE_CURRENT_SOURCE_DIR}/cmake_uninstall.cmake.in" "${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake" IMMEDIATE @ONLY)
-ADD_CUSTOM_TARGET(uninstall "${CMAKE_COMMAND}" -P "${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake")
-
-# ----------------------------------------------------------------------------
-# create configuration file from .in file (If you use windows take care with paths)
-# ----------------------------------------------------------------------------
-
-CONFIGURE_FILE("${PROJECT_SOURCE_DIR}/config.cmake.in" "${PROJECT_BINARY_DIR}/${PROJECT_NAME}Config.cmake")
-INSTALL(FILES "${PROJECT_BINARY_DIR}/${PROJECT_NAME}Config.cmake" DESTINATION share/${PROJECT_NAME}/ )
-
-
-
 
 # ----------------------------------------------------------------------------
 #   Program Optimization and debug (Extracted from OpenCV)
@@ -196,7 +170,7 @@ IF(CMAKE_CXX_COMPILER_ID MATCHES "GNU"
        add_definitions(-DUSE_SSE4)
     endif()
 
-    IF(USE_AVX) 
+    IF(USE_AVX)
       set(VECTORIAL_INSTRUCTIONS "${VECTORIAL_INSTRUCTIONS} -mavx")
      add_definitions(-DUSE_AVX)
     endif()
@@ -285,8 +259,8 @@ MESSAGE( STATUS "CMAKE_BUILD_TYPE = ${CMAKE_BUILD_TYPE}" )
 MESSAGE( STATUS "CMAKE_MODULE_PATH = ${CMAKE_MODULE_PATH}" )
 MESSAGE( STATUS "BUILD_UTILS= ${BUILD_UTILS}" )
 MESSAGE( STATUS "BUILD_TESTS= ${BUILD_TESTS}" )
-MESSAGE( STATUS "OPENCV_DIR= ${OpenCV_DIR}" ) 
- 
+MESSAGE( STATUS "OPENCV_DIR= ${OpenCV_DIR}" )
+
 
 
 MESSAGE( STATUS )
