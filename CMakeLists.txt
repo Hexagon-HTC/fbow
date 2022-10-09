@@ -53,7 +53,7 @@ option(FBOW_DEVINSTALL 	"Set to OFF to disable source installation" ON)
 # ----------------------------------------------------------------------------
 #   Find Dependencies
 # ----------------------------------------------------------------------------
-find_package(OpenCV  REQUIRED)
+find_package(OpenCV  REQUIRED CONFIG)
 INCLUDE_DIRECTORIES(${OpenCV_INCLUDE_DIRS})
 MESSAGE("OPENCVINCDIR=${OpenCV_INCLUDE_DIRS}")
 
