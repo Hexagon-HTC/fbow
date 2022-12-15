@@ -6,7 +6,7 @@
 #include <map>
 #include <memory>
 #include <bitset>
-#ifndef __ANDROID__
+#ifndef __aarch64__
 #ifndef TARGET_OS_IOS
 #include <immintrin.h>
 #endif
@@ -243,7 +243,7 @@ private:
             return d;
         }
     };
-#ifdef __ANDROID__
+#ifdef __aarch64__
     //fake elements to allow compilation
     struct L2_avx_generic:public Lx<uint64_t,float,32>{inline float computeDist(uint64_t *ptr){return std::numeric_limits<float>::max();}};
     struct L2_se3_generic:public Lx<uint64_t,float,32>{inline float computeDist(uint64_t *ptr){return std::numeric_limits<float>::max();}};
