@@ -7,9 +7,7 @@
 #include <memory>
 #include <bitset>
 #ifndef __aarch64__
-#ifndef TARGET_OS_IOS
 #include <immintrin.h>
-#endif
 #endif
 #include "cpu.h"
 namespace fbow{
