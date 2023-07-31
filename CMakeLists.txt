@@ -42,8 +42,7 @@ option(FBOW_DEVINSTALL 	"Set to OFF to disable source installation" ON)
 # ----------------------------------------------------------------------------
 #   Find Dependencies
 # ----------------------------------------------------------------------------
-include(${CMAKE_BINARY_DIR}/conan_paths.cmake)
-find_package(OpenCV REQUIRED COMPONENTS core $<${BUILD_UTILS}:features2d> CONFIG)
+find_package(OpenCV REQUIRED COMPONENTS core $<${BUILD_UTILS}:features2d>)
 INCLUDE_DIRECTORIES(${OpenCV_INCLUDE_DIRS})
 MESSAGE("OPENCVINCDIR=${OpenCV_INCLUDE_DIRS}")
 
